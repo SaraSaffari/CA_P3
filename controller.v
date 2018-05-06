@@ -52,10 +52,10 @@ module controller(clk, rst, upcode, pcWrite, memAddressSel, ACdataSel, IRwriteSe
 			default: ps <= ps;
 		endcase		
 	end
-	// always @(posedge clk or posedge rst) begin
-	// 	if (rst) ps <= s1;
-	// 	else ps <= ns;
-	// end
+	always @(posedge clk or posedge rst) begin
+		if (rst) ps <= s1;
+		else ps <= ns;
+	end
 
 
 endmodule
