@@ -2,9 +2,9 @@ module CONTROLLER_TB();
 	reg clk = 0;
 	reg rst; 
 	reg [3:0] upcode;
-	wire pcWrite, memAddressSel, ACdataSel, IRwriteSel, memRead, irWrite, ACwrite, ACread, memWrite;
+	wire pcWrite, memAddressSel, ACdataSel, memRead, ACwrite, ACread, memWrite, IRwritePart1, IRwritePart2;
 	wire [2:0] ALUcommand;
-	controller c(clk, rst, upcode, pcWrite, memAddressSel, ACdataSel, IRwriteSel, memRead, irWrite, ACwrite, ACread, memWrite, ALUcommand);
+	controller c(clk, rst, upcode, pcWrite, memAddressSel, ACdataSel, memRead, ACwrite, ACread, memWrite, ALUcommand, IRwritePart1, IRwritePart2);
 
 	initial repeat (47) #20 clk = ~clk;
 	initial begin
