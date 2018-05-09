@@ -1,5 +1,5 @@
 module dataPath_TB ();
-	input clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn;
+	input clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn;
 	output toCU;
 	wire [12:0] pcInput, pcOutput, address, RIBits;
 	wire [7:0] wordRegIn, wordRegOut, RSOut, LSOut, data, dataRegIn, dataRegOut, resultRegIn, resultRegOut;
@@ -24,7 +24,9 @@ module dataPath_TB ();
 		.LSEn(LS_En), 
 		.RSEn(RS_En), 
 		.DIEn(DI_En), 
-		.selData(sel_data), 
+		.selData(sel_data),
+		.selAddressAC(sel_addressAC),
+		.selALUsrc(sel_ALUsrc), 
 		.enb(enb), 
 		.dataRegEn(data_En), 
 		.resultRegEn(result_En), 

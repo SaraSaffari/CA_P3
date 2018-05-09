@@ -1,9 +1,10 @@
-module DataPath (clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn, toCU);
-	input clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn;
+module DataPath (clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn, toCU);
+	input clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn;
 	output toCU;
 	wire [12:0] pcInput, pcOutput, address, RIBits;
-	wire [7:0] wordRegIn, wordRegOut, RSOut, LSOut, data, dataRegIn, dataRegOut, resultRegIn, resultRegOut;
+	wire [7:0] wordRegIn, wordRegOut, RSOut, LSOut, data, dataRegIn, dataRegOut, resultRegIn, resultRegOut, selALUsrc;
 	wire [4:0] DIOut;
+	wire [1:0] addressAC;
 	wire CInput, COutput, ZInput, NInput;
 
 
@@ -62,7 +63,7 @@ module DataPath (clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, sel
 	mux_3_input #(.WORD_LENGTH(2)) mux3(
 		.in1(DIOut[4:3]), 
 		.in2(LSOut[1:0]), 
-		.in3(RSOut[3:2]), 
+		.in3(LSOut[3:2]), 
 		.sel(selAddressAC), 
 		.out(addressAC)
 	);
@@ -87,7 +88,7 @@ module DataPath (clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, sel
 	Accumulator ACUnit (
 		.clock(clk), 
 		.regWrite(enb), 
-		.RegisterNumber(DIOut[4:3]), 
+		.RegisterNumber(addressAC), 
 		.writeData(data), 
 		.readData(dataRegIn)
 	);
