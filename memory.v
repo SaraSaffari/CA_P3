@@ -1,7 +1,7 @@
-module dataMemory(clock, memWrite, memRead, addressMem, dataMem, wordRegIn);
+module Memory(clock, memWrite, memRead, addressMem, dataMem, memOut);
 	input clock, memWrite, memRead;
 	input[7:0] addressMem, dataMem;
-	output reg[7:0] wordRegIn;
+	output reg[7:0] memOut;
 	reg[7:0] word[8191:0];
 	
 	always @(posedge clock) begin
@@ -11,7 +11,7 @@ module dataMemory(clock, memWrite, memRead, addressMem, dataMem, wordRegIn);
 	end
 	always @(memRead , addressMem) begin
 		if (memRead)begin
-			wordRegIn <= word[addressMem];
+			memOut <= word[addressMem];
 		end
 	end
 endmodule 

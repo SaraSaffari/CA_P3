@@ -1,4 +1,4 @@
-module dataMemory_TB();
+module Memory_TB();
 	reg clk = 0;
 	reg [7:0] address;
 	reg [7:0] data ;
@@ -6,7 +6,7 @@ module dataMemory_TB();
 	reg memRead = 0;
 	wire[7:0] out;
 
-	dataMemory UTT(clk, memWrite, memRead, address, data, out);
+	Memory Mem(clk, memWrite, memRead, address, data, out);
 
 	initial repeat (1000) #5 clk = ~clk;
 
