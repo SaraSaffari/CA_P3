@@ -1,19 +1,33 @@
 module dataPath_TB ();
-	input clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn;
-	output toCU;
-	wire [12:0] pcInput, pcOutput, address, RIBits;
-	wire [7:0] wordRegIn, wordRegOut, RSOut, LSOut, data, dataRegIn, dataRegOut, resultRegIn, resultRegOut;
-	wire [4:0] DIOut;
-	wire CInput, COutput, ZInput, NInput;
+	reg clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn;
+	// reg [12:0] pcInput, pcOutput, address, RIBits;
+	// reg [7:0] wordRegIn, wordRegOut, RSOut, LSOut, data, dataRegIn, dataRegOut, resultRegIn, resultRegOut;
+	// reg [4:0] DIOut;
+	// reg CInput, COutput, ZInput, NInput;
+	wire toCU;
 
 	initial repeat (15) #50 clk = ~clk;
 
 	initial begin
 		#40
-		
+				
 	end
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	dataPath DP(
 		.clk(clk),
 		.pcEn(pc_En), 
