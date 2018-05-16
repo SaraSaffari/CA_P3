@@ -1,12 +1,19 @@
 module controller(clk, rst, upcode, pcWrite, memAddressSel, ACdataSel, memRead, ACwrite, ACread, memWrite, ALUcommand, IRwritePart1, IRwritePart2);
 	input clk, rst;
 	input [3:0] upcode;
-	output reg pcWrite, memAddressSel, ACdataSel, memRead, ACwrite, ACread, memWrite, IRwritePart1, IRwritePart2;
+	output reg pcWrite, memAddressSel, memRead, ACwrite, ACread, memWrite, IRwritePart1, IRwritePart2;
+	output reg [1:0] ACdataSel;
+	output reg ACaddressSel, ALUBinputSel;
 	output reg [2:0] ALUcommand;
-	parameter [3:0] s1 = 4'd1, s2 = 4'd2, sAddress = 4'd3, sLDA1 = 4'd4, sLDA2 = 4'd5, sSTA1 = 4'd6, 
-		sSTA2 = 4'd7, sA = 4'd8, sADA = 4'd9, sANA = 4'd10, SAA = 4'd11;
+	parameter [4:0] s1 = 5'd1, s2 = 5'd2, sAddress = 5'd3, sLDA1 = 5'd4, sLDA2 = 5'd5, sSTA1 = 5'd6, 
+		sSTA2 = 5'd7, sA = 5'd8, sADA = 5'd9, sANA = 5'd10, SAA = 5'd11;
 		//sA is the first state of ADA/ANA branch and SAA is the last state of this branch
-	reg [3:0] ps = 0, ns;
+
+		//ACCUMULATOR STATES:
+	parameter [4:0] sACCUMULATOR = 5'd12, sMVR = 5`d13, sADR = 5'd14, sANR = 5'd15, sORR = 5'd16,
+		sACCUMULATORfinish = 5'd17;
+
+	reg [4:0] ps = 0, ns;
 	always @(ps) begin
 		{pcWrite, memAddressSel, ACdataSel, memRead, ACwrite, ACread, memWrite, IRwritePart1, IRwritePart2} <= 20'b0;
 		case(ps)
@@ -14,13 +21,23 @@ module controller(clk, rst, upcode, pcWrite, memAddressSel, ACdataSel, memRead, 
 			s2: begin end
 			sAddress: begin memRead <= 1 ;  IRwritePart2 <= 1 ; pcWrite <= 1 ; memAddressSel <= 0; end
 			sLDA1: begin memRead <= 1; memAddressSel <= 1;end
-			sLDA2: begin ACwrite <= 1; ACdataSel <= 0; end
-			sSTA1: begin ACread <= 1;  end
+			sLDA2: begin ACwrite <= 1; ACdataSel <= 0; ACaddressSel <= 0; end
+			sSTA1: begin ACread <= 1; ACaddressSel <= 0;  end
 			sSTA2: begin  memWrite<= 1; memAddressSel <= 1; end
 			sA: begin ACread <= 1; memRead <= 1; memAddressSel <= 1; end
 			sADA: begin ALUcommand <= 0; end  //ADD C
 			sANA: begin ALUcommand <= 1; end  //&
 			SAA: begin ACwrite <= 1; ACdataSel <= 1; end
+			
+			// ACCUMULATOR INSTRUCTIONS
+
+			sACCUMULATOR:
+			sMVR:
+			sADR:
+			sANR:
+			sORR:
+			sACCUMULATORfinish:
+
 			default: ps <= ps;
 		endcase		
 	end

@@ -4,7 +4,7 @@ module ALU_TB();
 	wire [7:0] rslt;
 	reg ci;
 	reg [2:0] func;
-	reg co;
+	wire co;
 	reg z ;
 	reg n ;	
 
@@ -13,7 +13,6 @@ module ALU_TB();
 		#10
 		A = 8'b 011111001;
 		B = 8'b 110000100;
-		co = 0;
 		n = 0 ;
 		z = 0 ;
 		ci = 1;
