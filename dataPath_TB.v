@@ -16,6 +16,30 @@ module dataPath_TB ();
 		pc_En <= 1;
 		sel_address <= 0;
 		LS_En <= 1;
+		#20
+		DI_En <= 1;
+		#50
+		memread <= 1;
+		pc_En <= 1;
+		sel_address <= 0;
+		LS_En <= 1;
+		#50
+		memread <= 1;
+		pc_En <= 1;
+		sel_address <= 0;
+		RS_En <= 1;
+		LS_En <= 0;
+		#50
+		RS_En <= 0;
+		sel_address <= 1;
+		memread <= 1;
+		#50
+		sel_addressAC <= 0;
+		selALUsrc <= 0;
+		op <= 2'b00;
+		#50
+
+
 	end
 
    
