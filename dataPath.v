@@ -1,8 +1,10 @@
-module DataPath (clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn, toCU);
-	input clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn;
+module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn, toCU, operation);
+	input clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selALUsrc, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn;
+	input [1:0] selAddressAC, selData;
+	input [2:0] operation;
 	output toCU;
 	wire [12:0] pcInput, pcOutput, address, RIBits;
-	wire [7:0] wordRegIn, wordRegOut, RSOut, LSOut, data, dataRegIn, dataRegOut, resultRegIn, resultRegOut, selALUsrc;
+	wire [7:0] wordRegIn, wordRegOut, RSOut, LSOut, data, dataRegIn, dataRegOut, resultRegIn, resultRegOut, AlUsrc;
 	wire [4:0] DIOut;
 	wire [1:0] addressAC;
 	wire CInput, COutput, ZInput, NInput;
@@ -11,8 +13,9 @@ module DataPath (clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, sel
 	assign RIBits = {LSOut[4:0],RSOut[7:0]};
 	assign toCU = wordRegIn[7:5];
 
-	register #(.size(13)) pc(
+	pcRegister #(.size(13)) pc(
 		.clock(clk),
+		.rst(reset),
 		.enable(pcEn),
 		.regIn(pcInput),
 		.regOut(pcOutput)
@@ -77,8 +80,9 @@ module DataPath (clk, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, sel
 
 	ALU aluUnit (
 		.inputA(dataRegIn),
-		.inputB(wordRegOut),
+		.inputB(AlUsrc),
 		.carryIn(COutput),
+		.func(operation),
 		.result(resultRegIn), 
 		.carryOut(CInput), 
 		.zero(ZInput), 
