@@ -1,3 +1,4 @@
+
 module ALU_TB();
 	reg clk = 0;
 	reg [7:0] A, B;
@@ -5,26 +6,26 @@ module ALU_TB();
 	reg ci;
 	reg [2:0] func;
 	wire co;
-<<<<<<< HEAD
-	reg z ;
-	reg n ;	
-=======
+// <<<<<<< HEAD
+// 	reg z ;
+// 	reg n ;	
+// =======
 	wire z;
 	wire n;	
->>>>>>> d78f388b7752f2b95841dc30e1683b13bf2b6265
+//>>>>>>> d78f388b7752f2b95841dc30e1683b13bf2b6265
 
 	initial repeat (10) #50 clk = ~clk;
 	initial begin
 		#10
-<<<<<<< HEAD
+// <<<<<<< HEAD	
 		A = 8'b 011111001;
 		B = 8'b 110000100;
-		n = 0 ;
-		z = 0 ;
-=======
-		A = 8'b 00000001;
-		B = 8'b 11111110;
->>>>>>> d78f388b7752f2b95841dc30e1683b13bf2b6265
+	//	n = 0 ;
+	//	z = 0 ;
+// =======
+// 		A = 8'b 00000001;
+// 		B = 8'b 11111110;
+// >>>>>>> d78f388b7752f2b95841dc30e1683b13bf2b6265
 		ci = 1;
 		func = 2'b 00;
 		#80

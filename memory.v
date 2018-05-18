@@ -17,8 +17,8 @@ module Memory(clock, memWrite, memRead, addressMem, dataMem, memOut);
 	end
 
 	always @(posedge clock ) begin
-		word[0] <= 8'd7
-		word[1] <= {010, 00000};
+		word[0] <= 8'd7;
+		word[1] <= {3'b010, 5'b00000};
 		word[2] <= 8'd0;
 	end
 endmodule 

@@ -1,9 +1,9 @@
-module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn, toCU, operation);
-	input clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selALUsrc, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn;
+module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn, toCU, operation,selPC);
+	input clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selALUsrc, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn, selPC;
 	input [1:0] selAddressAC, selData;
 	input [2:0] operation;
 	output toCU;
-	wire [12:0] pcInput, pcOutput, address, RIBits;
+	wire [12:0] pcInput, pcOutput, address, RIBits, toPC;
 	wire [7:0] wordRegIn, wordRegOut, RSOut, LSOut, data, dataRegIn, dataRegOut, resultRegIn, resultRegOut, AlUsrc;
 	wire [4:0] DIOut;
 	wire [1:0] addressAC;
@@ -49,18 +49,17 @@ module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DI
 	);
 
 	mux_2_input  #(.WORD_LENGTH (13)) mux1 (
+		.in1(pcInput), 
+		.in2(RIBits), 
+		.sel(selPC), 
+		.out(toPC)
+	);
+
+	mux_2_input  #(.WORD_LENGTH (13)) mux2 (
 		.in1(pcOutput), 
 		.in2(RIBits), 
 		.sel(selAddress), 
 		.out(address)
-	);
-
-	mux_3_input  #(.WORD_LENGTH (8)) mux2 (
-		.in1(wordRegOut), 
-		.in2(resultRegOut),
-		.in3(dataRegOut),
-		.sel(selData), 
-		.out(data)
 	);
 
 	mux_3_input #(.WORD_LENGTH(2)) mux3(
@@ -71,8 +70,16 @@ module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DI
 		.out(addressAC)
 	);
 
-	mux_2_input  #(.WORD_LENGTH (8)) mux4 (
-		.in1(dataRegIn), 
+	mux_3_input  #(.WORD_LENGTH (8)) mux4 (
+		.in1(wordRegOut), 
+		.in2(resultRegOut),
+		.in3(dataRegOut),
+		.sel(selData), 
+		.out(data)
+	);
+
+	mux_2_input  #(.WORD_LENGTH (8)) mux5 (
+		.in1(dataRegOut), 
 		.in2(wordRegOut), 
 		.sel(selALUsrc), 
 		.out(AlUsrc)
