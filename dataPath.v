@@ -2,7 +2,7 @@ module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DI
 	input clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selALUsrc, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn, selPC;
 	input [1:0] selAddressAC, selData;
 	input [2:0] operation;
-	output toCU;
+	output [3:0] toCU;
 	wire [12:0] pcInput, pcOutput, address, RIBits, toPC;
 	wire [7:0] wordRegIn, wordRegOut, RSOut, LSOut, data, dataRegIn, dataRegOut, resultRegIn, resultRegOut, AlUsrc;
 	wire [4:0] DIOut;
@@ -11,7 +11,7 @@ module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DI
 
 
 	assign RIBits = {LSOut[4:0],RSOut[7:0]};
-	assign toCU = wordRegIn[7:5];
+	assign toCU = wordRegIn[7:4];
 
 	pcRegister #(.size(13)) pc(
 		.clock(clk),

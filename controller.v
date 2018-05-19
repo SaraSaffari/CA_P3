@@ -14,7 +14,8 @@ module controller(clk, rst, upcode, pcWrite, memAddressSel, pcDataSel, ACdataSel
 	output resultRegEn, dataRegEn, wordRegEn, CEn, ZEn, NEn;
 	assign resultRegEn = 1, dataRegEn = 1, wordRegEn = 1, CEn = 1, ZEn = 1, NEn = 1;
 	output reg [1:0] ACdataSel;
-	output reg ACaddressSel, ALUBinputSel;
+	output reg [1:0] ACaddressSel;
+	output reg ALUBinputSel;
 	output reg [2:0] ALUcommand;
 	parameter [4:0] s1 = 5'd1, s2 = 5'd2, sAddress = 5'd3, sLDA1 = 5'd4, sLDA2 = 5'd5, sSTA1 = 5'd6, 
 		sSTA2 = 5'd7, sA = 5'd8, sADA = 5'd9, sANA = 5'd10, SAA = 5'd11, sACCUMULATOR = 5'd12, sMVR = 5'd13, 
