@@ -17,7 +17,7 @@ module controller(clk, rst, upcode, pcWrite, memAddressSel, pcDataSel, ACdataSel
 	output reg [1:0] ACaddressSel;
 	output reg ALUBinputSel;
 	output reg [2:0] ALUcommand;
-	parameter [4:0] s1 = 5'd1, s2 = 5'd2, sAddress = 5'd3, sLDA1 = 5'd4, sLDA2 = 5'd5, sSTA1 = 5'd6, 
+	parameter [4:0] fakeState = 5'd0, s1 = 5'd1, s2 = 5'd2, sAddress = 5'd3, sLDA1 = 5'd4, sLDA2 = 5'd5, sSTA1 = 5'd6, 
 		sSTA2 = 5'd7, sA = 5'd8, sADA = 5'd9, sANA = 5'd10, SAA = 5'd11, sACCUMULATOR = 5'd12, sMVR = 5'd13, 
 		sADR = 5'd14, sANR = 5'd15, sORR = 5'd16, sOAA = 5'd17, sLDI = 5'd18, sJMP = 5'd19;
 
@@ -60,7 +60,8 @@ module controller(clk, rst, upcode, pcWrite, memAddressSel, pcDataSel, ACdataSel
 	always @(ps) begin
 		case(ps)
 			s1: ns <= s2;
-			s2: begin
+			s2: ns <= fakeState;
+			fakeState: begin
 				if(upcode[3:1] == 3'b000 || upcode[3:1] == 3'b001 || 
 				   upcode[3:1] == 3'b010 || upcode[3:1] == 3'b011) ns <= sAddress;
 				else if(upcode[3:0] == 4'b1000 || upcode[3:0] == 4'b1001 || 
