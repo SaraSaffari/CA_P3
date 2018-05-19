@@ -3,11 +3,11 @@ module AAAAAmips_TB();
 	reg rst; 
 	wire [3:0] upcode;
 	wire pcWrite, memAddressSel, memRead, ACwrite, ACread, memWrite;
-	wire [1:0] ACdataSel, ACaddressSel;
+	wire [1:0] ACdataSel, ACaddressSel, jmpCond;
 	wire [2:0] ALUcommand;
 	wire IRwritePart1, IRwritePart2, DIwrite, ALUBinputSel, resultRegEn, dataRegEn, wordRegEn, 
 		CEn, ZEn, NEn;
-	wire pcDataSel;
+	wire pcDataSel, C, Z, N;
 
 
 DataPath D(
@@ -30,15 +30,19 @@ DataPath D(
 	.CEn(CEn),
 	.ZEn(ZEn),
 	.NEn(NEn),
+	.CC(C),
+	.ZZ(Z),
+	.NN(N),
 	.toCU(upcode),
 	.operation(ALUcommand),
-	.selPC(pcDataSel)
+	.selPC(pcDataSel),
+	.jmpCond(jmpCond)
 	);
 
 	controller c(
 		.clk(clk), 
 		.rst(rst), 
-		.upcode(upcode), 
+		.Dupcode(upcode), 
 		.pcWrite(pcWrite), 
 		.memAddressSel(memAddressSel), 
 		.pcDataSel(pcDataSel), 
@@ -58,10 +62,14 @@ DataPath D(
 		.wordRegEn(wordRegEn), 
 		.CEn(CEn), 
 		.ZEn(ZEn), 
-		.NEn(NEn)
+		.NEn(NEn),
+		.C(C),
+		.Z(Z),
+		.N(N),
+		.jmpCond(jmpCond)
 		);
 
-	initial repeat (100) #20 clk = ~clk;
+	initial repeat (400) #20 clk = ~clk;
 	initial begin
 		rst = 1;
 

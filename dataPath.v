@@ -1,18 +1,23 @@
-module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn, toCU, operation,selPC);
+module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selData, selALUsrc, selAddressAC, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn, CC, ZZ, NN, toCU, operation,selPC, jmpCond);
 	input clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DIEn, selALUsrc, enb, dataRegEn, resultRegEn, CEn, ZEn, NEn, selPC;
 	input [1:0] selAddressAC, selData;
 	input [2:0] operation;
 	output [3:0] toCU;
+	output[1:0] jmpCond;
 	wire [12:0] pcInput, pcOutput, address, RIBits, toPC;
 	wire [7:0] wordRegIn, wordRegOut, RSOut, LSOut, data, dataRegIn, dataRegOut, resultRegIn, resultRegOut, AlUsrc;
 	wire [4:0] DIOut;
 	wire [1:0] addressAC;
 	wire CInput, COutput, ZInput, NInput;
+	output CC, ZZ, NN;
+	assign CC = CInput;
+	assign ZZ = ZInput;
+	assign NN = NInput;
 
 
 	assign RIBits = {LSOut[4:0],RSOut[7:0]};
 	assign toCU = wordRegIn[7:4];
-
+	assign jmpCond = DIOut[2:1];
 	pcRegister #(.size(13)) pc(
 		.clock(clk),
 		.rst(reset),
@@ -21,8 +26,9 @@ module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DI
 		.regOut(pcOutput)
 	);
 
-	register #(.size(1)) C(
+	pcRegister #(.size(1)) C(
 		.clock(clk),
+		.rst(reset),
 		.enable(CEn),
 		.regIn(CInput),
 		.regOut(COutput)
@@ -126,13 +132,13 @@ module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DI
 		.regIn(wordRegIn),
 		.regOut(RSOut)
 	);	
-
-	register #(.size(8)) wordRegister(
-		.clock(clk),
-		.enable(wordRegEn),
-		.regIn(wordRegIn),
-		.regOut(wordRegOut)
-	);	
+	assign wordRegOut = wordRegIn;
+	// register #(.size(8)) wordRegister(
+	// 	.clock(clk),
+	// 	.enable(wordRegEn),
+	// 	.regIn(wordRegIn),
+	// 	.regOut(wordRegOut)
+	// );	
 	register #(.size(8)) dataRegister(
 		.clock(clk),
 		.enable(dataRegEn),
