@@ -29,8 +29,8 @@ module controller(clk, rst, upcode, pcWrite, memAddressSel, pcDataSel, ACdataSel
 	always @(ps) begin
 		{pcWrite, memRead, ACwrite, ACread, memWrite, IRwritePart1, IRwritePart2, DIwrite} <= 20'b0;
 		case(ps)
-			s1: begin pcWrite <= 1; memRead <= 1 ; pcDataSel <= 0; memAddressSel <= 0; IRwritePart1 <= 1; end
-			s2: begin end
+			s1: begin pcWrite <= 1; memRead <= 1 ; pcDataSel <= 0; memAddressSel <= 0; end
+			s2: begin IRwritePart1 <= 1; end
 			sAddress: begin pcWrite <= 1; memRead <= 1; pcDataSel <= 0; memAddressSel <= 0; IRwritePart2 <= 1; end
 			sLDA1: begin memAddressSel <= 1; memRead <= 1; end
 			sLDA2: begin ACdataSel <= 0; ACwrite <= 1; ACaddressSel <= 0; end
