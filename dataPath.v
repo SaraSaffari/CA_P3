@@ -22,7 +22,7 @@ module DataPath (clk, reset, pcEn, selAddress, mr, mw, wordRegEn, LSEn, RSEn, DI
 		.clock(clk),
 		.rst(reset),
 		.enable(pcEn),
-		.regIn(pcInput),
+		.regIn(toPC),
 		.regOut(pcOutput)
 	);
 

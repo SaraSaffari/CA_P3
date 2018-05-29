@@ -35,6 +35,7 @@ module controller(clk, rst, Dupcode, pcWrite, memAddressSel, pcDataSel, ACdataSe
 		case(ps)
 			s1: begin pcWrite <= 1; memRead <= 1 ; pcDataSel <= 0; memAddressSel <= 0; end
 			s2: begin IRwritePart1 <= 1; upcode <= Dupcode; end
+			fakeState: begin IRwritePart2 <= 1; memRead <= 1; end
 			sAddress: begin pcWrite <= 1; memRead <= 1; pcDataSel <= 0; memAddressSel <= 0; end
 			fakeState2: begin memRead <= 1; pcDataSel <= 0; memAddressSel <= 0; IRwritePart2 <= 1; end
 			sLDA1: begin memAddressSel <= 1; memRead <= 1; end
@@ -77,7 +78,7 @@ module controller(clk, rst, Dupcode, pcWrite, memAddressSel, pcDataSel, ACdataSe
 				   upcode[3:1] == 3'b010 || upcode[3:1] == 3'b011) ns <= sAddress;
 				else if(upcode[3:0] == 4'b1000 || upcode[3:0] == 4'b1001 || 
 					upcode[3:0] == 4'b1010 || upcode[3:0] == 4'b1011 ) ns <= sACCUMULATOR;
-				else if(upcode[3:0] == 3'b110) ns <= sJMP;
+				else if(upcode[3:1] == 3'b110) ns <= sJMP;
 				else ns <= sLDI;
 			end
 			sAddress: ns <= fakeState2;
